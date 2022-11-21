@@ -9,7 +9,7 @@
 
 .choice-container:hover {
     cursor: pointer;
-    box-shadow: 0 0.4rem 1.4rem 0 rgba(47, 241, 63, 0.5);
+    box-shadow: 0 0.4rem 1.4rem 0 rgba(10, 145, 127, 0.5);
     transform: translateY(-0.1rem);
     transition: transform 150ms;
 }
@@ -23,4 +23,27 @@
 .choice-text {
     padding: 1.5rem;
     width: 100%;
+}
+
+.correct {
+    background-color: rgb(64, 158, 64);
+}
+
+.incorrect {
+    background-color: rgb(255, 113, 113);
+}
+
+/* HUD Display */
+#hud {
+    display: flex;
+    justify-content: space-between;
+}
+
+.hud-prefix {
+    text-align: center;
+    font-size: 2rem;
+}
+
+.hud-text {
+    text-align: center;
 }
