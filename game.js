@@ -1,10 +1,14 @@
 var question = document.getElementById("question");
 var choices = Array.from(document.getElementsByClassName("choice-text"));
+var questionCounterText = document.getElementById('questionCounter');
+var scoreText = document.getElementById('score');
 
 var currentQuestion = {}; //Object to keep track of question
 var acceptingAnswers = false; // Does not let the user answer until everything is loaded
-var score = 0;              //Keep track of score 
+var score = 0;   
+var questionCounter = 0;           //Keep track of score 
 var availableQuestions = []; // which questions are in the page
+var timer = document.getElementById('#timer');
 
 var questions = [ //question array
     {
@@ -35,6 +39,8 @@ var questions = [ //question array
 ];
 
 const maxQuestions = 3;
+const correctBonus = 10;
+const incorrectPenalty = -5;
 
 function startGame() {
     questionCounter = 0;
@@ -42,12 +48,30 @@ function startGame() {
     availableQuestions = [...questions]; // Make a full copy
     console.log(availableQuestions);
 }
+//Corresponds to timer
+function countDown() {
 
+    var timeInterval = setInterval(function () {
+    timer.textContent = timeLeft;
+    timeLeft--;
+    if (timeLeft < 1 || indexQuestion >= questions.length) {
+    timer.textContent = "0";
+    clearInterval(timeInterval);
+    quiz.style.display = "none";
+    endpart.style.display = "block";
+    }
+    }, 1000);
+}
+
+//Gets new question in a random order after answer
 function getNewQuestion() {
     if (availableQuestions.length === 0 || questionCounter >= maxQuestions) {
+        localStorage.setItem('mostRecentScore', score);
         return window.location.assign ('/end.html'); // home location
-    } else
+    }
     questionCounter++;
+    questionCounterText.innerText = questionCounter + "/" + maxQuestions;
+
     var questionIndex = Math.floor(Math.random() * availableQuestions.length);
     //picks a whole number at random
     currentQuestion = availableQuestions[questionIndex];
@@ -55,13 +79,19 @@ function getNewQuestion() {
     choices.forEach((choice) => {  //New way to type a function aka arrow functions
         var number = choice.dataset ['number']; // gets the data number from html to see what question we are on
         choice.innerText = currentQuestion['choice' + number]; //Writes the corresponding question 
+        
     });
 
     availableQuestions.splice(questionIndex, 1);
     acceptingAnswers = true;
   }
 
-  //gets the data from the chocie clicked on
+  changeScore = num => {
+    score +=num;
+    scoreText.innerText = score;
+  }
+
+  //gets the data from the choice clicked on
   choices.forEach(choice => {
     choice.addEventListener('click', event => {
         if (!acceptingAnswers) return;
@@ -76,9 +106,19 @@ function getNewQuestion() {
         }
         console.log(classToApply);
 
+        if(classToApply === 'correct') {
+            changeScore(correctBonus);
+        }else if (score != 0){
+            changeScore(incorrectPenalty);
+        }
 
-        getNewQuestion();
+        selectedChoice.parentElement.classList.add(classToApply);
+        setTimeout (() => {
+            selectedChoice.parentElement.classList.remove(classToApply);
+            getNewQuestion();
+        }, 1000);
     })
   })
+
 startGame();
 getNewQuestion();
