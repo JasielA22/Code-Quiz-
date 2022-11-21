@@ -8,7 +8,7 @@ var acceptingAnswers = false; // Does not let the user answer until everything i
 var score = 0;   
 var questionCounter = 0;           //Keep track of score 
 var availableQuestions = []; // which questions are in the page
-var timer = document.getElementById('#timer');
+var timer = document.getElementById('timer');
 
 var questions = [ //question array
     {
@@ -42,31 +42,30 @@ const maxQuestions = 3;
 const correctBonus = 10;
 const incorrectPenalty = -5;
 
+function countdown() {
+    var timeLeft = 59;
+    var timeInterval = setInterval(function () {
+      timer.innerHTML = timeLeft;
+      timeLeft--;
+      if(timeLeft < 0) {
+        clearInterval(timeInterval);
+      }
+      console.log(timeLeft);
+    }, 1000);
+}
+
 function startGame() {
     questionCounter = 0;
     score = 0;
     availableQuestions = [...questions]; // Make a full copy
     console.log(availableQuestions);
-}
-//Corresponds to timer
-function countDown() {
-
-    var timeInterval = setInterval(function () {
-    timer.textContent = timeLeft;
-    timeLeft--;
-    if (timeLeft < 1 || indexQuestion >= questions.length) {
-    timer.textContent = "0";
-    clearInterval(timeInterval);
-    quiz.style.display = "none";
-    endpart.style.display = "block";
-    }
-    }, 1000);
+    countdown();
 }
 
 //Gets new question in a random order after answer
 function getNewQuestion() {
     if (availableQuestions.length === 0 || questionCounter >= maxQuestions) {
-        localStorage.setItem('mostRecentScore', score);
+        localStorage.setItem("mostRecentScore", score);
         return window.location.assign ('/end.html'); // home location
     }
     questionCounter++;
@@ -110,7 +109,7 @@ function getNewQuestion() {
             changeScore(correctBonus);
         }else if (score != 0){
             changeScore(incorrectPenalty);
-        }
+        };
 
         selectedChoice.parentElement.classList.add(classToApply);
         setTimeout (() => {
