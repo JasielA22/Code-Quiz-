@@ -9,6 +9,7 @@ var score = 0;
 var questionCounter = 0;           //Keep track of score 
 var availableQuestions = []; // which questions are in the page
 var timer = document.getElementById('timer');
+var timeLeft = 59;
 
 var questions = [ //question array
     {
@@ -42,24 +43,11 @@ const maxQuestions = 3;
 const correctBonus = 10;
 const incorrectPenalty = -5;
 
-function countdown() {
-    var timeLeft = 59;
-    var timeInterval = setInterval(function () {
-      timer.innerHTML = timeLeft;
-      timeLeft--;
-      if(timeLeft < 0) {
-        clearInterval(timeInterval);
-      }
-      console.log(timeLeft);
-    }, 1000);
-}
-
 function startGame() {
     questionCounter = 0;
     score = 0;
     availableQuestions = [...questions]; // Make a full copy
     console.log(availableQuestions);
-    countdown();
 }
 
 //Gets new question in a random order after answer
@@ -90,6 +78,7 @@ function getNewQuestion() {
     scoreText.innerText = score;
   }
 
+  
   //gets the data from the choice clicked on
   choices.forEach(choice => {
     choice.addEventListener('click', event => {
@@ -102,7 +91,10 @@ function getNewQuestion() {
         var classToApply = 'incorrect';
         if(selectedAnswer == currentQuestion.answer) {
             classToApply = 'correct' ;
+        }else {
+            timeLeft -= 10;
         }
+      
         console.log(classToApply);
 
         if(classToApply === 'correct') {
@@ -119,5 +111,17 @@ function getNewQuestion() {
     })
   })
 
+  function countdown() {
+    var timeInterval = setInterval(function () {
+      timer.innerHTML = timeLeft;
+      timeLeft--;
+      if(timeLeft < 0) {
+        clearInterval(timeInterval);
+        window.location.assign ('/end.html');
+      }
+    }, 1000);
+}
+
 startGame();
 getNewQuestion();
+countdown();
