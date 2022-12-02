@@ -117,7 +117,7 @@ function getNewQuestion() {
       timeLeft--;
       if(timeLeft < 0) {
         clearInterval(timeInterval);
-        window.location.assign ('/end.html');
+        window.location.assign ('./end.html');
       }
     }, 1000);
 }
