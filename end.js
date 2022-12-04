@@ -25,6 +25,6 @@ function saveHighScore(event) {
     })
     highScores.splice(5);
     localStorage.setItem('highScores', JSON.stringify(highScores)); // saves even if refreshed
-    window.location.assign ('./highScore.html');
+    window.location.assign ('/highscore.html');
     console.log(highScores);
 };
