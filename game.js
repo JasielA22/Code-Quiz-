@@ -54,7 +54,7 @@ function startGame() {
 function getNewQuestion() {
     if (availableQuestions.length === 0 || questionCounter >= maxQuestions) {
         localStorage.setItem("mostRecentScore", score);
-        return window.location.assign ('./end.html'); // home location
+        return window.location.assign ('/end.html'); // home location
     }
     questionCounter++;
     questionCounterText.innerText = questionCounter + "/" + maxQuestions;
@@ -117,7 +117,7 @@ function getNewQuestion() {
       timeLeft--;
       if(timeLeft < 0) {
         clearInterval(timeInterval);
-        window.location.assign ('./end.html');
+        window.location.assign ('/end.html');
       }
     }, 1000);
 }
